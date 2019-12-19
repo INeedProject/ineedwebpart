@@ -1,42 +1,59 @@
 
 .App {
-  text-align: center;
+  /*text-align: center;*/
+
+}
+
+#demo {
+  background: #282c34 url("logo.svg") no-repeat scroll 50% 50%;
   height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: "Lato", sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-#demo {
-  background: #282c34 url("logo.svg") no-repeat scroll 50% 50%;
-}
-/*.App-header {
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  margin-left: 25px;
+  margin-top: 100px;
+  z-index: 1;
+  top: 0;
+  left: 0;
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}*/
-
-.App-link {
-  color: #61dafb;
+  overflow-x: hidden;
+  padding-top: 20px;
 }
 
-/*@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.sidenav option,input,select,p{
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 12px;
+  color: #818181;
+  display: block;
+  width: 200px;
+}
+
+.sidenav select,input:hover {
+  color: darkgrey;
+}
+label{
+  color: darkgrey;
+}
+/*.main{
+  margin-left: 160px;
+  font-size: 28px;
+  padding: 0px 10px;
 }*/
+
+
+::placeholder {
+  color: darkgrey;
+  font-size: 12px;
+}
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}

@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
@@ -18,15 +17,18 @@ const config = {
 };
 firebase.initializeApp( config );
 let db = firebase.firestore();
-/*db.collection("needs").add({
- location:"sakarya",
- status:"met",
- type:"digital",
- }).then(function(docRef){
- console.log("document written with Id: ", docRef.id);
- }).catch(function(error){
- console.error("error adding doc: ",error);
- });*/
+
+/*var citiesRef = db.collection('cities');
+
+var landmarks = Promise.all([
+  citiesRef.doc('SF').collection('needs').doc().set({
+    location: 'sakarya',
+    type: 'book',
+    status:true,
+    desc:"need help with missing books in karasu's library"
+
+  })
+]);*/
 
 
 //var needs = db.collectionGroup('needs').where('status', '==', false);
@@ -40,7 +42,7 @@ class App extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      cities:['','Adana', 'Adıyaman', 'Afyon', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin',
+      cities:['Select a City','Adana', 'Adıyaman', 'Afyon', 'Ağrı', 'Amasya', 'Ankara', 'Antalya', 'Artvin',
         'Aydın', 'Balıkesir', 'Bilecik', 'Bingöl', 'Bitlis', 'Bolu', 'Burdur', 'Bursa', 'Çanakkale',
         'Çankırı', 'Çorum', 'Denizli', 'Diyarbakır', 'Edirne', 'Elazığ', 'Erzincan', 'Erzurum', 'Eskişehir',
         'Gaziantep', 'Giresun', 'Gümüşhane', 'Hakkari', 'Hatay', 'Isparta', 'Mersin', 'istanbul', 'izmir',
@@ -50,36 +52,49 @@ class App extends React.Component{
         'Van', 'Yozgat', 'Zonguldak', 'Aksaray', 'Bayburt', 'Karaman', 'Kırıkkale', 'Batman', 'Şırnak',
         'Bartın', 'Ardahan', 'Iğdır', 'Yalova', 'Karabük', 'Kilis', 'Osmaniye', 'Düzce'],
       selectedcity:"",
-      type:['Type Of Need','Clothing','Electronics','Books',]
-    }
-    this.handleSubmit = this.handleSubmit.bind(this);
+      type:['Type Of Need','Clothing','Electronics','Books'],
+      keywords:"",
+      selectedtype:"",
+      getsearch:[],
+    };
+    this.searchNeed = this.searchNeed.bind(this);
   }
 
 
-  handleSubmit(event) {
-    var needs=db.collectionGroup('needs').where('location', '==', this.state.selectedcity.toLowerCase());
-    needs.get().then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        console.log(doc.id, ' => ', doc.data());
-      });
-    });
-    alert(console.log(this.state.selectedcity.toLowerCase()));
+  searchNeed( event){
+    let i=0;
     event.preventDefault();
+    let {getsearch}= this.state;
+    let needs = db.collectionGroup( 'needs' ).where( 'location', '==', this.state.selectedcity.toLowerCase() );
+    needs.get().then( function ( querySnapshot ){
+      querySnapshot.forEach( function ( doc ){
+        console.log( doc.id, ' => ', doc.data() );
+        getsearch[i]=doc.data();
+        i++;
+      } );
+    } );
+    this.setState({getsearch});
   }
-
 
   render(){
+    const {getsearch}=this.state;
     return (
-        <div className="App" id="demo">
-          <header className="App-header">
-            <form onSubmit={this.handleSubmit}>
+        <div className id="demo">
+          <div className="sidenav">
+            <input type="text" name="keywords" value={this.state.keywords} onChange={(e) => this.setState({keywords: e.target.value,getsearch})} placeholder="Enter Keywords to search"/>
+            <form onSubmit={this.searchNeed}>
+              <select value={this.state.selectedtype}
+                      onChange={(e) => this.setState({selectedtype: e.target.value,getsearch})}>
+                {this.state.type.map((x)=><option key={x}>{x}</option>)}
+              </select>
             <select value={this.state.selectedcity}
-                    onChange={(e) => this.setState({selectedcity: e.target.value})}>
-              {this.state.cities.map((x,y)=><option key={x}>{x}</option>)}
+                    onChange={(e) => this.setState({selectedcity: e.target.value,getsearch})}>
+              {this.state.cities.map((x)=><option key={x}>{x}</option>)}
             </select>
               <input type="submit" value="Submit" />
             </form>
-          </header>
+            {getsearch.map(((value, index) => <p><strong>{index}</strong><br></br><strong>Description:</strong>{value.desc}<br></br><strong>Location:</strong>{value.location}<br></br><strong>Type:</strong>{value.type}</p>))}
+          </div>
 
         </div>
     );
