@@ -20,23 +20,23 @@ let db = firebase.firestore();
 
 /*var citiesRef = db.collection('cities');
 
-var landmarks = Promise.all([
-  citiesRef.doc('SF').collection('needs').doc().set({
-    location: 'sakarya',
-    type: 'book',
-    status:true,
-    desc:"need help with missing books in karasu's library"
+ var landmarks = Promise.all([
+ citiesRef.doc('SF').collection('needs').doc().set({
+ location: 'sakarya',
+ type: 'book',
+ status:true,
+ desc:"need help with missing books in karasu's library"
 
-  })
-]);*/
+ })
+ ]);*/
 
 
 //var needs = db.collectionGroup('needs').where('status', '==', false);
 /*needs.get().then(function (querySnapshot) {
-  querySnapshot.forEach(function (doc) {
-    console.log(doc.id, ' => ', doc.data());
-  });
-});*/
+ querySnapshot.forEach(function (doc) {
+ console.log(doc.id, ' => ', doc.data());
+ });
+ });*/
 
 class App extends React.Component{
   constructor(props){
@@ -56,24 +56,59 @@ class App extends React.Component{
       keywords:"",
       selectedtype:"",
       getsearch:[],
+      searched:false,
     };
-    this.searchNeed = this.searchNeed.bind(this);
+
+    this.insertNeed=this.insertNeed.bind(this);
   }
 
 
-  searchNeed( event){
-    let i=0;
+  insertNeed(event){
     event.preventDefault();
-    let {getsearch}= this.state;
-    let needs = db.collectionGroup( 'needs' ).where( 'location', '==', this.state.selectedcity.toLowerCase() );
-    needs.get().then( function ( querySnapshot ){
-      querySnapshot.forEach( function ( doc ){
-        console.log( doc.id, ' => ', doc.data() );
-        getsearch[i]=doc.data();
-        i++;
+    var citiesRef = db.collection('cities');
+
+    var landmarks = Promise.all([
+      citiesRef.doc(this.state.selectedcity.toLowerCase()).collection('needs').doc().set({
+        location: this.state.selectedcity,
+        type: this.state.selectedtype,
+        status:false,
+        desc:this.state.keywords,
+
+      })
+    ]);
+    console.log("itworks?");
+    console.log(this.state.selectedcity);
+    console.log(this.state.selectedtype);
+    console.log(this.state.keywords);
+    this.setState({getsearch:[],searched:false});
+  }
+  componentDidMount() {
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 500);
+  }
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  searchNeed=(event)=>{
+    event.preventDefault();
+    if (this.state.selectedcity==="izmir"||this.state.selectedcity==="istanbul"||this.state.selectedcity==="Sakarya"||this.state.selectedcity==="Adana"||this.state.selectedcity==="Ankara"){
+      let i = 0;
+      event.preventDefault();
+      let { getsearch } = this.state;
+      let needs = db.collectionGroup( 'needs' ).where( 'location', '==', this.state.selectedcity.toLowerCase() );
+      needs.get().then( function ( querySnapshot ){
+        querySnapshot.forEach( function ( doc ){
+          //console.log( doc.id, ' => ', doc.data() );
+          getsearch[ i ] = doc.data();
+          i++;
+        } );
       } );
-    } );
-    this.setState({getsearch});
+      this.setState( { getsearch,searched:true } );
+
+    }
+    else{
+      this.setState({getsearch:[],searched:false});
+    }
   }
 
   render(){
@@ -81,19 +116,22 @@ class App extends React.Component{
     return (
         <div className id="demo">
           <div className="sidenav">
-            <input type="text" name="keywords" value={this.state.keywords} onChange={(e) => this.setState({keywords: e.target.value,getsearch})} placeholder="Enter Keywords to search"/>
+            <input type="text" name="keywords" value={this.state.keywords} onChange={(e) => this.setState({keywords: e.target.value,getsearch})} placeholder="Enter Keywords or Description"/>
             <form onSubmit={this.searchNeed}>
               <select value={this.state.selectedtype}
                       onChange={(e) => this.setState({selectedtype: e.target.value,getsearch})}>
                 {this.state.type.map((x)=><option key={x}>{x}</option>)}
               </select>
-            <select value={this.state.selectedcity}
-                    onChange={(e) => this.setState({selectedcity: e.target.value,getsearch})}>
-              {this.state.cities.map((x)=><option key={x}>{x}</option>)}
-            </select>
-              <input type="submit" value="Submit" />
+              <select value={this.state.selectedcity}
+                      onChange={(e) => this.setState({selectedcity: e.target.value,getsearch})}>
+                {this.state.cities.map((x)=><option key={x}>{x}</option>)}
+              </select>
+              <input type="submit" value="Search" />
             </form>
-            {getsearch.map(((value, index) => <p><strong>{index}</strong><br></br><strong>Description:</strong>{value.desc}<br></br><strong>Location:</strong>{value.location}<br></br><strong>Type:</strong>{value.type}</p>))}
+            {getsearch.map(((value, index) => <p><strong>{index+1}</strong><br></br><strong>Description:</strong>{value.desc}<br></br><strong>Location:</strong>{value.location}<br></br><strong>Type:</strong>{value.type}</p>))}
+            <form onSubmit={this.insertNeed}>
+              <input type="submit" value="Add Need" />
+            </form>
           </div>
 
         </div>
