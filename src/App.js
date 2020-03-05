@@ -249,14 +249,24 @@ class App extends React.Component{
       selectedtype:"",
       getsearch:[],
       searched:false,
+      email:"",
+      pass:"",
+      login:false,
     };
 
     this.insertNeed=this.insertNeed.bind(this);
     this.insertNeedrealtime=this.insertNeedrealtime.bind(this);
-    this.signin=this.signin.bind();
-    this.signup=this.signup.bind();
 
   }
+
+  componentDidMount() {
+    this.interval = setInterval(() => this.setState({ time: Date.now() }), 500);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   insertNeedrealtime(event){
     event.preventDefault();
     //var citiesRef = db.collection('cities');
@@ -275,30 +285,33 @@ class App extends React.Component{
     this.setState({getsearch:[],searched:false});
 
   }
-  async signup(){
-    //event.preventDefault();
-    let email="faqeacc@yandex.com";
+  signup=async event=>{
+    event.preventDefault();
+    const {email,pass}=this.state;
     try{
-      console.log(await firebase.auth().createUserWithEmailAndPassword( email, "333221" ));
+      console.log(await firebase.auth().createUserWithEmailAndPassword( email,pass ));
       // eslint-disable-next-line no-restricted-globals
-      history.push( "/" );
+      //history.push( "/" );
+      console.log("you are signed up");
     }catch ( error ){
       alert(error);
     }
 
-  }
-  async signin(){
-    //event.preventDefault();
-    let email="faqeacc@yandex.com";
+  };
+  signin=async event=>{
+    event.preventDefault();
+    const {email,pass}=this.state;
     try{
-      console.log(await firebase.auth().signInWithEmailAndPassword( email, "333221" ));
+      console.log(await firebase.auth().signInWithEmailAndPassword( email, pass ));
       // eslint-disable-next-line no-restricted-globals
-      history.push( "/" );
+      //history.push( "/" );
+      console.log("you are logged in");
+      this.setState({login:true})
     }catch ( error ){
       alert(error);
     }
 
-  }
+  };
 
 
   insertNeed(){
@@ -319,7 +332,7 @@ class App extends React.Component{
     console.log(this.state.selectedtype);
     console.log(this.state.keywords);
     this.setState({getsearch:[],searched:false});
-    this.SignIn();
+
   }
   searchNeedrealtime=(event)=>{
     event.preventDefault();
@@ -345,12 +358,6 @@ class App extends React.Component{
     }
   };
 
-  componentDidMount() {
-    this.interval = setInterval(() => this.setState({ time: Date.now() }), 500);
-  }
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
 
   searchNeed=(event)=>{
     event.preventDefault();
@@ -372,7 +379,7 @@ class App extends React.Component{
     else{
       this.setState({getsearch:[],searched:false});
     }
-    this.SignUp();
+    //this.SignUp();
   };
 
   render(){
@@ -396,6 +403,16 @@ class App extends React.Component{
             <form onSubmit={this.insertNeed}>
               <input type="submit" value="Add Need" />
             </form>
+            {this.state.login!==true?<div>     <form onSubmit={this.signin}>
+              <input type="text" name="keywords" value={this.state.email} onChange={(e) => this.setState({email: e.target.value})} placeholder="Enter email to sign-in or sign-up"/>
+              <input type="text" name="keywords" value={this.state.pass} onChange={(e) => this.setState({pass: e.target.value})} placeholder="Enter Password to sign-in or sign-up"/>
+              <input type="submit" value="Sign In" />
+            </form>
+              <form onSubmit={this.signup}>
+                <input type="submit" value="Sign up" />
+              </form></div>:<p>you are signed in PogChamp</p>}
+
+
           </div>
 
         </div>
