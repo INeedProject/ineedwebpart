@@ -3,16 +3,11 @@ import './App.css';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import "firebase/auth";
-import { Map, GoogleApiWrapper,Marker } from 'google-maps-react';
 import config from './Components/firebaseconfig';
 import Search from './Components/Search'
+import NeedMap from "./NeedMap";
 firebase.initializeApp(config);
 const rdb=firebase.database();
-const mapStyles = {
-  width: '50%',
-  height: '50%',
-  margin:'0 auto',
-};
 
 class App extends React.Component{
   constructor(props){
@@ -28,12 +23,6 @@ class App extends React.Component{
       login:false,
       userneeds:[],
       offerdata:[],
-      somemarkers:[
-        {latitude:39.872917, longitude:32.748170,},
-        {latitude:39.87, longitude:32.768170,},
-        {latitude:39.842917, longitude:32.778170,},
-        {latitude:39.832917, longitude:32.788170,},
-      ],
       loading:true,
     };
     this.fetch=null;
@@ -136,14 +125,6 @@ class App extends React.Component{
     });
     this.setState({offerdata:temp});
   };
-  displayMarkers = () => {
-    return this.state.somemarkers.map((val, index) => {
-      return <Marker key={index} id={index} position={{
-        lat: val.latitude,
-        lng: val.longitude
-      }} onClick={() => alert("You clicked to a marker! This will be need information with Modal style.")} />
-    })
-  };
 
   render(){
     return (
@@ -168,22 +149,13 @@ class App extends React.Component{
               <strong>Offerer:</strong>{value.offerer}<br/><strong>state:</strong>{value.state} <br/><strong>Hashcode of the need:</strong>{value.needhash}</p></div>))}
 
           </div>
-          <Map
-              google={this.props.google}
-              zoom={8}
-              style={mapStyles}
-              initialCenter={{ lat: 39.873881, lng:32.748357}}
-          >
-            {this.displayMarkers()}
-          </Map>
+          <NeedMap/>
 
         </div>
     );
   }
 }
 
-export default GoogleApiWrapper({
-  apiKey:process.env.REACT_APP_API_KEY,
-})(App);
+export default App;
 
 
