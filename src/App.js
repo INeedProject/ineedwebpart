@@ -52,6 +52,11 @@ class App extends React.Component{
     this.setState({loading:false});
     console.log(this.fetch);
     console.log((this.offers));
+    console.log(firebase.auth().currentUser);
+    if(firebase.auth().currentUser!=null){
+      this.state.email = firebase.auth().currentUser.email;
+      this.setState({login:true});
+    }
 
   }
 
@@ -97,6 +102,7 @@ class App extends React.Component{
       alert(error);
     }
     console.log(firebase.auth().currentUser);
+    console.log(firebase.auth().currentUser.email);
 
   };
 
