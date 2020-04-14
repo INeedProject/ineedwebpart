@@ -6,7 +6,7 @@ import "firebase/auth";
 import { Map, GoogleApiWrapper,Marker } from 'google-maps-react';
 import config from './Components/firebaseconfig';
 import citiesofturkey from './Components/citiesofturkey'
-
+import type from './Components/NeedTypes'
 firebase.initializeApp(config);
 const rdb=firebase.database();
 const mapStyles = {
@@ -19,9 +19,7 @@ class App extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      cities:citiesofturkey,
       selectedcity:"",
-      type:['Type Of Need','Clothing','Electronics','Books'],
       keywords:"",
       selectedtype:"",
       getsearch:[],
@@ -192,11 +190,11 @@ class App extends React.Component{
             <form onSubmit={this.searchNeedrealtime}>
               <select value={this.state.selectedtype}
                       onChange={(e) => this.setState({selectedtype: e.target.value})}>
-                {this.state.type.map((x)=><option key={x}>{x}</option>)}
+                {type.map((x)=><option key={x}>{x}</option>)}
               </select>
               <select value={this.state.selectedcity}
                       onChange={(e) => this.setState({selectedcity: e.target.value})}>
-                {this.state.cities.map((x)=><option key={x}>{x}</option>)}
+                {citiesofturkey.map((x)=><option key={x}>{x}</option>)}
               </select>
               <input type="submit" value="Search" />
             </form>
@@ -237,7 +235,7 @@ class App extends React.Component{
 }
 
 export default GoogleApiWrapper({
-  apiKey:'AIzaSyBdkoTn81MIQMGLHgExwJ5jS1KLWyn6As8',
+  apiKey:process.env.REACT_APP_API_KEY,
 })(App);
 
 
