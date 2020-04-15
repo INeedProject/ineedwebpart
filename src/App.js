@@ -5,7 +5,7 @@ import 'firebase/database';
 import "firebase/auth";
 import config from './Components/firebaseconfig';
 import Search from './Components/Search'
-import NeedMap from "./NeedMap";
+import NeedMap from "./Components/NeedMap";
 firebase.initializeApp(config);
 const rdb=firebase.database();
 
@@ -46,9 +46,6 @@ class App extends React.Component{
 
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
 
   insertNeedrealtime(event){
     event.preventDefault();
