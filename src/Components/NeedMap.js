@@ -1,9 +1,8 @@
 import React from "react";
 import { Map, GoogleApiWrapper,Marker } from 'google-maps-react';
 const mapStyles = {
-  width: '50%',
-  height: '50%',
-  margin:'0 auto',
+  width: '80%',
+  height: '85%',
 };
 class NeedMap extends React.Component{
   constructor(props){
@@ -28,8 +27,7 @@ class NeedMap extends React.Component{
   };
 
   render(){
-    return (
-        <div>
+    return (<div className="mapped">
           <Map
               google={this.props.google}
               zoom={8}

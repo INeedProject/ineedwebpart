@@ -1,13 +1,21 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
 
 
 
 
 const Results=props=>
-    props.getsearch.map( ( ( value, index ) => <div><p>
+    props.getsearch.map( ( ( value, index ) => <div key={value.key}><p>
         <strong>{ index + 1 }</strong><br/><strong>Description:</strong>{ value.desc }<br/><strong>Location:</strong>{ value.location }<br/><strong>Type:</strong>{ value.type }
     </p>
-        <input type="submit" value="OfferHelp" onClick={ props.offerHelp } id={ value.key }/></div>
+          <Button
+              variant="contained"
+              onClick={props.offerHelp}
+              itemID={value.key}
+          >
+            Offer Help
+          </Button>
+    </div>
 ));
 
 export default Results;
