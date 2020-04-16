@@ -55,9 +55,11 @@ class Search extends Component {
                 return item.location.toLowerCase().includes(selectedc);
             }
             return item.location.toLowerCase().includes(selectedc) && item.desc.toLowerCase().includes( keyw );
-        }else
-            return item.desc.toLowerCase().includes( keyw );
-
+        }else if(keyw===null){
+            return item.location.toLowerCase().includes(selectedc) && item.type.toLowerCase().includes( seltype );
+        }
+        else
+            return item.type.toLowerCase().includes( seltype ) && item.location.toLowerCase().includes(selectedc)&& item.desc.toLowerCase().includes(keyw);
 
     }
 
@@ -77,10 +79,18 @@ class Search extends Component {
         });
         this.setState({getsearch:temp,searched:false});
     };
+
     showResults=(event)=>{
         event.preventDefault();
-        this.setState({searched:true});
-        cogoToast.success("Results have found");
+        console.log(this.state.getsearch.length)
+        if(this.state.selectedcity===""&& this.state.selectedtype===""&&this.state.keywords==="")
+            cogoToast.error("All fields are blank");
+        else if(this.state.getsearch.length<=0)
+            cogoToast.error("Criteria did not match with any results");
+        else{
+            this.setState( { searched: true } );
+            cogoToast.success( "Results have found" );
+        }
     }
 
     offerHelp=async event =>{

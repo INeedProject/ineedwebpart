@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route,Switch} from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
 import firebase from 'firebase/app';
 import 'firebase/database';
 import "firebase/auth";
@@ -13,6 +13,7 @@ import Search from './contents/Search';
 import Offers from './contents/Offers';
 import SignUp from './contents/SignUp';
 import AddNeed from './contents/AddNeed';
+import Signout from './contents/Signout'
 firebase.initializeApp(config);
 const rdb=firebase.database();
 const fetch= rdb.ref('needs/')
@@ -28,6 +29,7 @@ class App extends React.Component{
   }
 
   }
+
 
   render(){
     const notsigned= <><Route  path="/signin">
@@ -45,7 +47,11 @@ class App extends React.Component{
       </Route>
       <Route  path="/offers">
         <Offers offers={offers}/>
-      </Route></>
+      </Route>
+      <Route path="/signout">
+        <Signout/>
+      </Route>
+    </>
 
   return (
     <Router>

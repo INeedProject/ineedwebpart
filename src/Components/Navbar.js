@@ -26,7 +26,8 @@ class Navbar extends Component {
                 {localStorage.getItem("loggedin")!=="yes"?<><Navitem item="SignIn" tolink="/signin"  activec={ this.activeitem }/>
                 <Navitem item="SignUp" tolink="/signup"  activec={ this.activeitem }/></>:
                 <><Navitem item="Add Need" tolink="/addneed"  activec={ this.activeitem }/>
-                <Navitem item="UserNeeds" tolink="/userneeds"  activec={ this.activeitem }/><Navitem item="Offers" tolink="/offers"  activec={ this.activeitem }/></>}
+                <Navitem item="UserNeeds" tolink="/userneeds"  activec={ this.activeitem }/><Navitem item="Offers" tolink="/offers"  activec={ this.activeitem }/>
+                <Navitem item="Sign Out" tolink="/signout"  activec={ this.activeitem } /></>}
 
             <Navitem item="Search" tolink="/search"  activec={ this.activeitem }/>
             </ul>
