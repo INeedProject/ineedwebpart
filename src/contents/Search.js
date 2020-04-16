@@ -20,7 +20,7 @@ class Search extends Component {
             searched:false,
             getsearch:[],
         };
-        this.fetch=null
+
     }
 
     componentDidUpdate( prevProps, prevState, snapshot ){
@@ -39,27 +39,25 @@ class Search extends Component {
             keyw=keywords.toLowerCase();
         if(selectedtype!=="")
             seltype=selectedtype.toLowerCase();
-        if(selectedc===null){
 
-        }
         if(selectedc===null){
-            if(keyw===null){
-                if(seltype===null){
+            if(seltype===null){
+                if(keyw===null){
                     cogoToast.error("Enter any information to search");
                     return false;
                 }
-                return item.type.toLowerCase().includes( seltype );
+                return item.desc.toLowerCase().includes( keyw );
             }
             return item.type.toLowerCase().includes( seltype )&& item.desc.toLowerCase().includes(keyw);
 
-        }else if(keyw===null){
-            if(seltype===null){
+        }else if(seltype===null){
+            if(keyw===null){
                 return item.location.toLowerCase().includes(selectedc);
             }
-            return item.location.toLowerCase().includes(selectedc) && item.type.toLowerCase().includes( seltype );
-        }else if(seltype===null){
-            return item.location.toLowerCase().includes( selectedc ) && item.desc.toLowerCase().includes( keyw );
-        }
+            return item.location.toLowerCase().includes(selectedc) && item.desc.toLowerCase().includes( keyw );
+        }else
+            return item.desc.toLowerCase().includes( keyw );
+
 
     }
 
@@ -88,7 +86,7 @@ class Search extends Component {
     offerHelp=async event =>{
         event.preventDefault();
         this.props.rdb.ref('offers/').push({
-            needhash:event.target.getAttribute("itemID"),
+            needhash:event.target.parentNode.getAttribute("itemID"),
             offerer:"example@example.com",
             email:this.props.email,
             state:false,
@@ -135,7 +133,7 @@ class Search extends Component {
                 >
                     Search
                 </Button>
-                {this.state.searched===true?<Results getsearch={this.state.getsearch} offerHelp={this.offerHelp}/>:<p>You can search</p>}
+                {this.state.searched===true?<Results getsearch={this.state.getsearch} offerHelp={this.offerHelp}/>:<></>}
             </div>
             )
         }

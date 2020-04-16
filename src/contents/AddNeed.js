@@ -52,8 +52,8 @@ class AddNeed extends React.Component{
       cogoToast.error( "Description can't be empty" );
       return false;
     }
-    else if(this.state.type===""){
-      cogoToast.error( "Select a supply type" )
+    else if(this.state.selectedtype===""){
+      cogoToast.error( "Select a need type" )
       return false;
     }
     else if(this.state.poslat===null ||this.state.poslng===null ){
