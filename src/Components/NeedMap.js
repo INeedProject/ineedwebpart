@@ -1,48 +1,54 @@
 import React from "react";
-import { Map, GoogleApiWrapper,Marker } from 'google-maps-react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 const mapStyles = {
-  width: '80%',
+  width: '95%',
   height: '85%',
 };
 class NeedMap extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      somemarkers:[
-        {latitude:39.872917, longitude:32.748170,},
-        {latitude:39.87, longitude:32.768170,},
-        {latitude:39.842917, longitude:32.778170,},
-        {latitude:39.832917, longitude:32.788170,},
-      ],
+    markers:[],
+    loading:true,
     }
   }
 
+  async componentDidMount(){
+    console.log(this.props.getneed);
+    this.displayMarkers();
+    this.refresh();
+  }
+  refresh=()=>{
+    this.setState({loading:false});
+  }
   displayMarkers = () => {
-    return this.state.somemarkers.map((val, index) => {
-      return <Marker key={index} id={index} position={{
+    const temp=this.props.getneed.map((val, index) =>
+       <Marker key={index} position={{
         lat: val.latitude,
         lng: val.longitude
       }} onClick={() => alert("You clicked to a marker! This will be need information with Modal style.")} />
-    })
+    )
+    console.log(temp);
+    this.setState({markers:temp});
   };
 
   render(){
-    return (<div className="mapped">
-          <Map
-              google={this.props.google}
-              zoom={8}
-              style={mapStyles}
-              initialCenter={{ lat: 39.873881, lng:32.748357}}
-          >
-            {this.displayMarkers()}
-          </Map>
-        </div>
+    return (<LoadScript
+            googleMapsApiKey={process.env.REACT_APP_API_KEY}
+        >
+        <GoogleMap
+            mapContainerStyle={mapStyles}
+            zoom={10}
+            center={{lat:39.873881,lng:32.748357}}
+            onClick={this.placeMarker}
+        >
+          {this.state.markers}
+        </GoogleMap>
+        </LoadScript>
     );
   }
 
 }
 
 
-export default GoogleApiWrapper({
-  apiKey:process.env.REACT_APP_API_KEY,
-})(NeedMap);
+export default NeedMap;

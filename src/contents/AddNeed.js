@@ -30,6 +30,9 @@ class AddNeed extends React.Component{
       status:false,
       desc:this.state.keywords,
       email:localStorage.getItem("email"),
+      latitude:"",
+      longtitude:"",
+
     });
     cogoToast.success("Your need has been recorded!");
   };

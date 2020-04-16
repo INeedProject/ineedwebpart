@@ -15,6 +15,9 @@ import SignUp from './contents/SignUp';
 import AddNeed from './contents/AddNeed';
 firebase.initializeApp(config);
 const rdb=firebase.database();
+const fetch= rdb.ref('needs/')
+const offers= rdb.ref('offers/');
+
 
 class App extends React.Component{
   constructor(props){
@@ -23,12 +26,6 @@ class App extends React.Component{
     login:localStorage.getItem( "loggedin" ) === "yes",
     email:localStorage.getItem("email")!==""?localStorage.getItem("email"):"",
   }
-
-  }
-
-  async componentDidMount(){
-    this.fetch=await rdb.ref('needs/')
-    this.offers=await rdb.ref('offers/');
 
   }
 
@@ -48,7 +45,7 @@ class App extends React.Component{
         <UserNeeds rdb={rdb}/>
       </Route>
       <Route  path="/offers">
-        <Offers rdb={rdb}/>
+        <Offers offers={offers}/>
       </Route></>
 
   return (
@@ -57,10 +54,10 @@ class App extends React.Component{
     <Navbar />
     <Switch>
     <Route exact path="/">
-    <Home />
+    <Home fetch={fetch} />
     </Route>
     <Route exact path="/search">
-    <Search fetch={this.fetch} rdb={rdb} email={this.state.email}/>
+    <Search fetch={fetch} rdb={rdb} email={this.state.email}/>
     </Route>
       {localStorage.getItem("loggedin")!=="yes"?notsigned:signed}
     </Switch>

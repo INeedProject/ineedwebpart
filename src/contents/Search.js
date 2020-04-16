@@ -22,9 +22,6 @@ class Search extends Component {
         };
         this.fetch=null
     }
-    async componentDidMount(){
-        this.fetch=await this.props.rdb.ref('needs/');
-    }
 
     componentDidUpdate( prevProps, prevState, snapshot ){
         if(this.state.selectedcity!==prevState.selectedcity){
@@ -35,7 +32,7 @@ class Search extends Component {
     searchNeedrealtime =  () => {
         const {selectedcity}=this.state;
         let temp=[];
-        this.fetch.on('value', snapshot => {
+        this.props.fetch.on('value', snapshot => {
             snapshot.forEach(function(childsnaps){
                 let item=childsnaps.val();
                 item.key=childsnaps.key;

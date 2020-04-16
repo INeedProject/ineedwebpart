@@ -44,7 +44,7 @@ class UserNeeds extends Component {
                 >
                     Get your posted needs
                 </Button>
-                {this.state.searched===true?this.state.userneeds.map(((value, index) => <div ><p><strong>{index+1}</strong><br/><strong>Description:</strong>{value.desc}<br/>
+                {this.state.searched===true?this.state.userneeds.map(((value, index) => <div key={index} ><p><strong>{index+1}</strong><br/><strong>Description:</strong>{value.desc}<br/>
                     <strong>Location:</strong>{value.location}<br/><strong>Type:</strong>{value.type}</p></div>)):<></>}
             </div>
             )

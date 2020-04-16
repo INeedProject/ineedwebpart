@@ -8,15 +8,13 @@ class Offers extends Component {
             offerdata:[],
             searched:false,
         }
-        this.fetch=null;
     }
     async componentDidMount(){
-        this.fetch=await this.props.rdb.ref('offers/');
         this.getOffers();
     }
     getOffers =  () => {
         let temp=[];
-        this.fetch.on('value', snapshot => {
+        this.props.offers.on('value', snapshot => {
             snapshot.forEach(function(childsnaps){
                 let item=childsnaps.val();
                 item.key=childsnaps.key;
@@ -42,7 +40,7 @@ class Offers extends Component {
                 >
                     See the offers.
                 </Button>
-                {this.state.searched?this.state.offerdata.map(((value, index) => <div ><p><strong>{index+1}</strong><br/><strong>My Email:</strong>{value.email}<br/>
+                {this.state.searched?this.state.offerdata.map(((value, index) => <div key={index}><p><strong>{index+1}</strong><br/><strong>My Email:</strong>{value.email}<br/>
                     <strong>Offerer:</strong>{value.offerer}<br/><strong>state:</strong>{value.state} <br/><strong>Hashcode of the need:</strong>{value.needhash}</p></div>)):<></>}
             </div>
             )
