@@ -8,7 +8,6 @@ class Home extends Component {
         this.state={
         }
     }
-
     needToArr=()=>{
         let temp=[];
         this.props.fetch.on('value', snapshot => {
@@ -18,14 +17,14 @@ class Home extends Component {
                 temp.push(item);
             });
         });
-        console.log(temp)
         return temp;
+
     }
 
     render() {
         return (
             <div className="condiv home">
-            <NeedMap getneed={this.needToArr()}/>
+            <NeedMap fetch={this.needToArr()}/>
             </div>
             )
         }

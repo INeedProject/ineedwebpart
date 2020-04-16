@@ -1,8 +1,8 @@
 import React from "react";
 import { GoogleMap, LoadScript,Marker } from "@react-google-maps/api";
 const mapStyles = {
-  width: '95%',
-  height: '85%',
+  width: '65%',
+  height: '65%',
 };
 class OnlyMap extends React.Component{
   constructor( props ){
@@ -16,6 +16,7 @@ class OnlyMap extends React.Component{
   placeMarker=event=>{
     this.setState({poslng:event.latLng.lng(),poslat:event.latLng.lat()});
     console.log(event.latLng.lng()+" "+event.latLng.lat());
+    this.props.setcoordinates(event.latLng.lng(),event.latLng.lat());
 
   };
 
@@ -27,7 +28,7 @@ class OnlyMap extends React.Component{
           <GoogleMap
               mapContainerStyle={mapStyles}
               zoom={10}
-              center={{lat:39.873881,lng:32.748357}}
+              center={{lat:poslat===null?39.873881:poslat,lng:poslng===null?32.748357:poslng}}
               onClick={this.placeMarker}
           >
             <Marker visible={poslat !== null} position={{lat:poslat!=null?poslat:32,lng:poslng!==null?poslng:32}}/>

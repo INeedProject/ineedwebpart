@@ -3,34 +3,35 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 const mapStyles = {
   width: '95%',
   height: '85%',
-};
+}
+
 class NeedMap extends React.Component{
   constructor(props){
     super(props);
     this.state={
-    markers:[],
+    markers:this.displayMarkers(),
     loading:true,
     }
   }
+componentDidMount(){
+    this.forceUpdate();
+}
 
-  async componentDidMount(){
-    console.log(this.props.getneed);
-    this.displayMarkers();
-    this.refresh();
-  }
-  refresh=()=>{
-    this.setState({loading:false});
-  }
   displayMarkers = () => {
-    const temp=this.props.getneed.map((val, index) =>
+    console.log(this.props.fetch);
+    const val=this.props.fetch.map((val, index) =>
        <Marker key={index} position={{
         lat: val.latitude,
         lng: val.longitude
       }} onClick={() => alert("You clicked to a marker! This will be need information with Modal style.")} />
     )
-    console.log(temp);
-    this.setState({markers:temp});
+    return val;
+
   };
+  loaded=()=>{
+    this.setState({loading:false})
+    this.forceUpdate();
+  }
 
   render(){
     return (<LoadScript
@@ -40,9 +41,9 @@ class NeedMap extends React.Component{
             mapContainerStyle={mapStyles}
             zoom={10}
             center={{lat:39.873881,lng:32.748357}}
-            onClick={this.placeMarker}
+            onLoad={this.loaded}
         >
-          {this.state.markers}
+          {this.state.loading===true?<></>:this.state.markers}
         </GoogleMap>
         </LoadScript>
     );

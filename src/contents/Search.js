@@ -24,20 +24,57 @@ class Search extends Component {
     }
 
     componentDidUpdate( prevProps, prevState, snapshot ){
-        if(this.state.selectedcity!==prevState.selectedcity){
+        if(this.state.selectedcity!==prevState.selectedcity||this.state.keywords!==prevState.keywords||this.state.selectedtype!==prevState.selectedtype){
             this.searchNeedrealtime();
         }
     }
+    checkInputs=(item)=>{
+        const {selectedcity,selectedtype,keywords}=this.state;
+        let selectedc=null;
+        let keyw=null;
+        let seltype=null;
+        if(selectedcity!=="")
+            selectedc=selectedcity.toLowerCase();
+        if(keywords!=="")
+            keyw=keywords.toLowerCase();
+        if(selectedtype!=="")
+            seltype=selectedtype.toLowerCase();
+        if(selectedc===null){
+
+        }
+        if(selectedc===null){
+            if(keyw===null){
+                if(seltype===null){
+                    cogoToast.error("Enter any information to search");
+                    return false;
+                }
+                return item.type.toLowerCase().includes( seltype );
+            }
+            return item.type.toLowerCase().includes( seltype )&& item.desc.toLowerCase().includes(keyw);
+
+        }else if(keyw===null){
+            if(seltype===null){
+                return item.location.toLowerCase().includes(selectedc);
+            }
+            return item.location.toLowerCase().includes(selectedc) && item.type.toLowerCase().includes( seltype );
+        }else if(seltype===null){
+            return item.location.toLowerCase().includes( selectedc ) && item.desc.toLowerCase().includes( keyw );
+        }
+
+    }
 
     searchNeedrealtime =  () => {
-        const {selectedcity}=this.state;
+        console.log()
         let temp=[];
+        let checkingInputs=this.checkInputs;
         this.props.fetch.on('value', snapshot => {
             snapshot.forEach(function(childsnaps){
                 let item=childsnaps.val();
                 item.key=childsnaps.key;
-                if(item.location===selectedcity)
-                    temp.push(item);
+                if(checkingInputs(item)){
+                    temp.push( item );
+
+                }
             });
         });
         this.setState({getsearch:temp,searched:false});

@@ -1,3 +1,3 @@
-const type=['Type Of Need','Clothing','Electronics','Books'];
+const type=['','Clothing','Electronics','Books'];
 
 export default type;

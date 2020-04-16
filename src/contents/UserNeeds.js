@@ -17,7 +17,6 @@ class UserNeeds extends Component {
     }
     getUserNeeds =()=> {
         let temp=[];
-        console.log(this.state.email);
         this.fetch.on('value', snapshot => {
             snapshot.forEach(function(childsnaps){
                 let item=childsnaps.val();

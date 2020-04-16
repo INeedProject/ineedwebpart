@@ -5,9 +5,11 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import type from "../Components/NeedTypes";
 import MenuItem from "@material-ui/core/MenuItem";
-import citiesofturkey from "../Components/citiesofturkey";
 import Button from "@material-ui/core/Button";
 import cogoToast from "cogo-toast";
+import OnlyMap from "../Components/OnlyMap";
+import Geocode from "react-geocode";
+
 
 
 class AddNeed extends React.Component{
@@ -17,24 +19,66 @@ class AddNeed extends React.Component{
       keywords:"",
       selectedtype:"",
       selectedcity:"",
-
+      poslng:null,
+      poslat:null,
+      location:"",
     }
   }
+  componentDidMount(){
+    Geocode.setApiKey(process.env.REACT_APP_API_KEY);
+    Geocode.setLanguage("tr");
+    Geocode.setRegion("tr");
+  }
 
+  getAddress=(lat,long)=> {
+    let address="";
+    Geocode.fromLatLng( long, lat ).then(
+        response => {
+          address = response.results[ 0 ].formatted_address;
+          this.setState({location:address})
+        },
+        error => {
+          console.error( error );
+        }
+    );
+  }
 
+  setCoordinates=(lat,long)=>{
+    this.getAddress(lat,long)
+    this.setState({poslng:lat,poslat:long});
+  }
+  checkInputs=()=>{
+    if(this.state.keywords===""){
+      cogoToast.error( "Description can't be empty" );
+      return false;
+    }
+    else if(this.state.type===""){
+      cogoToast.error( "Select a supply type" )
+      return false;
+    }
+    else if(this.state.poslat===null ||this.state.poslng===null ){
+      cogoToast.error( "Select an address from map" );
+      return false;
+    }
+    else
+      return true;
+  }
   insertNeedrealtime=async event=>{
     event.preventDefault();
-    await this.props.rdb.ref('needs/').push({
-      location: this.state.selectedcity,
-      type: this.state.selectedtype,
-      status:false,
-      desc:this.state.keywords,
-      email:localStorage.getItem("email"),
-      latitude:"",
-      longtitude:"",
+    if(this.checkInputs()){
+      await this.props.rdb.ref( 'needs/' ).push( {
+        location: this.state.location,
+        type: this.state.selectedtype,
+        status: false,
+        desc: this.state.keywords,
+        email: localStorage.getItem( "email" ),
+        latitude: this.state.poslat,
+        longitude: this.state.poslng,
 
-    });
-    cogoToast.success("Your need has been recorded!");
+      } );
+
+      cogoToast.success( "Your need has been recorded!" );
+    }
   };
 
   render(){
@@ -58,14 +102,15 @@ class AddNeed extends React.Component{
             </Select>
           </FormControl>
           <br/>
-          <FormControl className="controlform">
-            <InputLabel id="demo-simple-select-label">Location</InputLabel>
-            <Select
-                value={this.state.selectedcity}
-                onChange={(e) => this.setState({selectedcity: e.target.value})}>
-              {citiesofturkey.map((x)=><MenuItem key={x} value={x}>{x}</MenuItem>)}
-            </Select>
-          </FormControl>
+          {/*<FormControl className="controlform">*/}
+          {/*  <InputLabel id="demo-simple-select-label">Location</InputLabel>*/}
+          {/*  <Select*/}
+          {/*      value={this.state.selectedcity}*/}
+          {/*      onChange={(e) => this.setState({selectedcity: e.target.value})}>*/}
+          {/*    {citiesofturkey.map((x)=><MenuItem key={x} value={x}>{x}</MenuItem>)}*/}
+          {/*  </Select>*/}
+          {/*</FormControl>*/}
+          <OnlyMap setcoordinates={this.setCoordinates}/>
           <br/>
           <Button
               variant="contained"
