@@ -95,15 +95,20 @@ class Search extends Component {
 
     offerHelp=async event =>{
         event.preventDefault();
-        this.props.rdb.ref('offers/').push({
-            needhash:event.target.parentNode.getAttribute("itemID"),
-            offerer:"example@example.com",
-            email:this.props.email,
-            state:false,
-        });
-        console.log("offering help?");
-        this.setState({searched:true});
-        cogoToast.success("Your offer to help has been sent!");
+        if(localStorage.getItem("loggedin")!=="yes"){
+            cogoToast.error("You need to be logged to send offer to help");
+        }
+        else{
+            this.props.rdb.ref( 'offers/' ).push( {
+                needhash: event.target.parentNode.getAttribute( "itemID" ),
+                offerer: "example@example.com",
+                email: this.props.email,
+                state: false,
+            } );
+            console.log( "offering help?" );
+            this.setState( { searched: true } );
+            cogoToast.success( "Your offer to help has been sent!" );
+        }
     };
 
 

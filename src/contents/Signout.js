@@ -5,16 +5,12 @@ class Signout extends React.Component{
 
   componentDidMount(){
     localStorage.clear();
-    this.setRedirect();
+    window.location.reload();
 
 
   }
 
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    })
-  }
+
     render()
     {
       return (
