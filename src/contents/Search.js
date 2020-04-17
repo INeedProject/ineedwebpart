@@ -148,7 +148,17 @@ class Search extends Component {
                 >
                     Search
                 </Button>
+                <table className="container">
+                    <thead>
+                    <tr>
+                        <th><h1>Description</h1></th>
+                        <th><h1>Location</h1></th>
+                        <th><h1>Type</h1></th>
+                        <th><h1>Send Help Offer</h1></th>
+                    </tr>
+                    </thead>
                 {this.state.searched===true?<Results getsearch={this.state.getsearch} offerHelp={this.offerHelp}/>:<></>}
+                </table>
             </div>
             )
         }

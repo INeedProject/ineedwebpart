@@ -5,9 +5,10 @@ import Button from "@material-ui/core/Button";
 
 
 const Results=props=>
-    props.getsearch.map( ( ( value, index ) => <div key={value.key}><p>
-        <strong>{ index + 1 }</strong><br/><strong>Description:</strong>{ value.desc }<br/><strong>Location:</strong>{ value.location }<br/><strong>Type:</strong>{ value.type }
-    </p>
+    props.getsearch.map( ( ( value, index ) => <tbody><tr key={index}><td>
+      { value.desc }</td><td>{ value.location }</td><td>{ value.type }
+</td>
+  <td>
           <Button
               variant="contained"
               onClick={props.offerHelp}
@@ -15,7 +16,9 @@ const Results=props=>
           >
             Offer Help
           </Button>
-    </div>
+  </td>
+        </tr>
+    </tbody>
 ));
 
 export default Results;

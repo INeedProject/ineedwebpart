@@ -43,8 +43,17 @@ class UserNeeds extends Component {
                 >
                     Get your posted needs
                 </Button>
-                {this.state.searched===true?this.state.userneeds.map(((value, index) => <div key={index} ><p><strong>{index+1}</strong><br/><strong>Description:</strong>{value.desc}<br/>
-                    <strong>Location:</strong>{value.location}<br/><strong>Type:</strong>{value.type}</p></div>)):<></>}
+                <table className="container">
+                    <thead>
+                    <tr>
+                        <th><h1>Description</h1></th>
+                        <th><h1>Location</h1></th>
+                        <th><h1>Type</h1></th>
+                    </tr>
+                    </thead>
+                {this.state.searched===true?this.state.userneeds.map(((value, index) => <tbody><tr key={index}>
+                <td>{value.desc}</td><td>{value.location}</td><td>{value.type}</td></tr></tbody>)):<></>}
+                </table>
             </div>
             )
         }

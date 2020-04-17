@@ -40,8 +40,17 @@ class Offers extends Component {
                 >
                     See the offers.
                 </Button>
-                {this.state.searched?this.state.offerdata.map(((value, index) => <div key={index}><p><strong>{index+1}</strong><br/><strong>My Email:</strong>{value.email}<br/>
-                    <strong>Offerer:</strong>{value.offerer}<br/><strong>state:</strong>{value.state} <br/><strong>Hashcode of the need:</strong>{value.needhash}</p></div>)):<></>}
+                <table className="container">
+                    <thead>
+                    <tr>
+                        <th><h1>My Email</h1></th>
+                        <th><h1>Offerer</h1></th>
+                        <th><h1>Hashcode of the need</h1></th>
+                    </tr>
+                    </thead>
+                {this.state.searched?this.state.offerdata.map(((value, index) => <tbody><tr key={index}><td>{value.email}</td>
+                    <td>{value.offerer}</td><td>{value.needhash}</td></tr></tbody>)):<></>}
+                </table>
             </div>
             )
         }
