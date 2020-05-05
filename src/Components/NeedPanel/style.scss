@@ -1,0 +1,41 @@
+@keyframes slide-in {
+  0%{
+    transform: translateX(100%);
+  }
+
+  100%{
+    transform: translateX(0);
+  }
+}
+
+.need-info {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 300px;
+  background-color: #ffffff;
+  border-left: 1px solid #dedede;
+  box-shadow: 0 0 5px 5px #dedede;
+  display: flex;
+  flex-direction: column;
+  animation-name: slide-in;
+  animation-duration: 300ms;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+
+  .head {
+    background-image: linear-gradient(90deg, rgba(238, 103, 143, 1) 50%, rgba(132, 124, 252, 1) 80%);
+    text-align: center;
+    color: white;
+    padding: 0 10px;
+  }
+
+  .details{
+    padding: 10px;
+
+    li{
+      list-style: none;
+    }
+  }
+}
