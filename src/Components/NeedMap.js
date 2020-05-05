@@ -41,6 +41,8 @@ componentDidMount(){
   }
 
   render(){
+    const {currentMarker} = this.state;
+
     return (
     <>
       <LoadScript
@@ -49,13 +51,13 @@ componentDidMount(){
         <GoogleMap
           mapContainerStyle={mapStyles}
           zoom={10}
-          center={{lat:39.873881,lng:32.748357}}
+          center={currentMarker ? {lat: currentMarker.latitude, lng: currentMarker.longitude } : {lat:39.873881,lng:32.748357}}
           onLoad={this.loaded}
         >
           {this.state.loading===true?<></>:this.state.markers}
         </GoogleMap>
       </LoadScript>
-      {!!this.state.currentMarker && <NeedPanel value={this.state.currentMarker}/>}
+      {!!currentMarker && <NeedPanel value={currentMarker}/>}
     </>
   );
   }
