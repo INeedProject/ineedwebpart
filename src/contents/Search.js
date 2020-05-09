@@ -101,8 +101,8 @@ class Search extends Component {
         else{
             this.props.rdb.ref( 'offers/' ).push( {
                 needhash: event.target.parentNode.getAttribute( "itemID" ),
-                offerer: "example@example.com",
-                email: this.props.email,
+                offerer: this.props.email,
+                email: event.target.parentNode.getAttribute( "email" ),
                 state: false,
             } );
             console.log( "offering help?" );

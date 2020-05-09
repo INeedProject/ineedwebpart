@@ -13,6 +13,7 @@ const Results=props=>
               variant="contained"
               onClick={props.offerHelp}
               itemID={value.key}
+              email={value.email}
           >
             Offer Help
           </Button>
