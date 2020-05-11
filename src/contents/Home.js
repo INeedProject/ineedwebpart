@@ -3,31 +3,35 @@ import NeedMap from "../Components/NeedMap";
 
 
 class Home extends Component {
-    constructor( props ){
-        super( props );
-        this.state={
-        }
+  constructor( props ){
+    super( props );
+    this.state={
+      needs: [],
     }
-    needToArr=()=>{
-        let temp=[];
-        this.props.fetch.on('value', snapshot => {
-            snapshot.forEach(function(childsnaps){
-                let item=childsnaps.val();
-                item.key=childsnaps.key;
-                temp.push(item);
-            });
-        });
-        return temp;
+  }
 
-    }
+  componentDidMount() {
+    const comp = this;
+    this.props.fetch.on('value', snapshot => {
+      let temp = [];
+      snapshot.forEach(function (childsnaps) {
+        let item = childsnaps.val();
+        item.key = childsnaps.key;
+        temp.push(item);
+      });
+      comp.setState({needs: temp});
+    });
+  }
 
-    render() {
-        return (
-            <div className="condiv home">
-            <NeedMap fetch={this.needToArr()}/>
-            </div>
-            )
-        }
-    }
+  render() {
+    const {needs} = this.state;
 
-    export default Home
+    return (
+        <div className="condiv home">
+        <NeedMap fetch={needs}/>
+        </div>
+        )
+  }
+}
+
+export default Home
