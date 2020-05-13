@@ -56,8 +56,14 @@
       display: flex;
       justify-content: space-between;
 
+
       button {
-        flex-basis: 49%;
+        flex:1;
+        margin-right: 5px;
+
+        &:last-child{
+          margin-right: 0;
+        }
       }
     }
   }
