@@ -1,9 +1,9 @@
 @keyframes slide-in {
-  0%{
+  0% {
     transform: translateX(100%);
   }
 
-  100%{
+  100% {
     transform: translateX(0);
   }
 }
@@ -31,11 +31,35 @@
     padding: 0 10px;
   }
 
-  .details{
+  .details {
     padding: 10px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
-    li{
+    li {
       list-style: none;
+
+      label {
+        font-size: 10px;
+        font-weight: 700;
+        text-decoration: underline;
+      }
+
+      span{
+        font-weight: 300;
+      }
+    }
+
+    .buttons {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        flex-basis: 49%;
+      }
     }
   }
+
 }
