@@ -24,11 +24,12 @@ class Home extends Component {
   }
 
   render() {
-    const {needs} = this.state;
+    const { needs } = this.state;
+    const { isLogin } = this.props;
 
     return (
         <div className="condiv home">
-        <NeedMap fetch={needs}/>
+        <NeedMap fetch={needs} isLogin={isLogin}/>
         </div>
         )
   }

@@ -16,9 +16,8 @@ import AddNeed from './contents/AddNeed';
 import Signout from './contents/Signout'
 firebase.initializeApp(config);
 const rdb=firebase.database();
-const fetch= rdb.ref('needs/')
+const fetch= rdb.ref('needs/');
 const offers= rdb.ref('offers/');
-
 
 class App extends React.Component{
   constructor(props){
@@ -53,18 +52,20 @@ class App extends React.Component{
       </Route>
     </>
 
+    const isLogin = localStorage.getItem("loggedin") !== "yes";
+
   return (
     <Router>
     <div className="App">
     <Navbar />
     <Switch>
     <Route exact path="/">
-    <Home fetch={fetch} />
+    <Home fetch={fetch} isLogin={isLogin}/>
     </Route>
     <Route exact path="/search">
     <Search fetch={fetch} rdb={rdb} email={this.state.email}/>
     </Route>
-      {localStorage.getItem("loggedin")!=="yes"?notsigned:signed}
+      {isLogin?notsigned:signed}
     </Switch>
     </div>
     </Router>
