@@ -36,7 +36,8 @@ class App extends React.Component{
     </Route>
       <Route  path="/signup">
         <SignUp firebase={firebase}/>
-      </Route></>
+      </Route></>;
+
     const signed=<>
       <Route  path="/addneed">
         <AddNeed rdb={rdb}/>
@@ -50,9 +51,9 @@ class App extends React.Component{
       <Route path="/signout">
         <Signout/>
       </Route>
-    </>
+    </>;
 
-    const isLogin = localStorage.getItem("loggedin") !== "yes";
+    const isLogin = localStorage.getItem("loggedin") === "yes";
 
   return (
     <Router>
@@ -65,7 +66,7 @@ class App extends React.Component{
     <Route exact path="/search">
     <Search fetch={fetch} rdb={rdb} email={this.state.email}/>
     </Route>
-      {isLogin?notsigned:signed}
+      {isLogin?signed:notsigned}
     </Switch>
     </div>
     </Router>
