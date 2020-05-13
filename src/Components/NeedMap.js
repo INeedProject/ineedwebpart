@@ -16,6 +16,13 @@ class NeedMap extends React.Component{
     }
   }
 
+  onOfferHelp = (f) => {
+    return f;
+  };
+  onOfferCancel = () => {
+    this.setState({currentMarker: null});
+  };
+
   onMarkerClick = (val) => {
     this.setState({currentMarker: val});
   };
@@ -39,6 +46,7 @@ class NeedMap extends React.Component{
 
   render(){
     const {currentMarker} = this.state;
+    const {isLogin} = this.props;
 
     const markers = this.renderMarkers(this.props.fetch);
 
@@ -57,7 +65,14 @@ class NeedMap extends React.Component{
           {this.state.loading===true?<></>:markers}
         </GoogleMap>
       </LoadScript>
-      {!!currentMarker && <NeedPanel value={currentMarker}/>}
+      {!!currentMarker &&
+        <NeedPanel
+          isLogin={isLogin}
+          value={currentMarker}
+          onOfferHelp={this.onOffer}
+          onCancel={this.onOfferCancel}
+          onSignin={this.onSignin}
+        />}
     </>
   );
   }
