@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NeedMap from "../Components/NeedMap";
 
-
 class Home extends Component {
   constructor( props ){
     super( props );
@@ -11,15 +10,15 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const comp = this;
     this.props.fetch.on('value', snapshot => {
       let temp = [];
       snapshot.forEach(function (childsnaps) {
         let item = childsnaps.val();
+        // TODO: user self check
         item.key = childsnaps.key;
         temp.push(item);
       });
-      comp.setState({needs: temp});
+      this.setState({needs: temp});
     });
   }
 
