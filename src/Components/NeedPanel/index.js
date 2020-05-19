@@ -30,11 +30,12 @@ export default class NeedPanel extends React.Component {
             {isLogin ?
               <>
                 <Button variant="contained" onClick={this.props.onOffer}>Offer Help</Button>
-                <Button variant="contained" onClick={this.props.onCancel}>Close</Button>
+
               </>
               :
               <Button className="close" variant="contained" onClick={this.props.onSignin}>Sign In</Button>
             }
+            <Button variant="contained" onClick={this.props.onCancel}>Close</Button>
           </div>
         </div>
       </div>
