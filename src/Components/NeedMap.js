@@ -1,11 +1,12 @@
 import React from "react";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import NeedPanel from '../Components/NeedPanel';
+import { Redirect } from 'react-router-dom';
 
 const mapStyles = {
   width: '100%',
   height: '100%',
-}
+};
 
 class NeedMap extends React.Component{
   constructor(props){
@@ -16,9 +17,18 @@ class NeedMap extends React.Component{
     }
   }
 
-  onOfferHelp = (f) => {
+  redirect = () => {
+    this.setState({redirect: true})
+  };
+
+  onSignin = () => (
+    <Redirect to={'/signin'} />
+  );
+
+  onOffer = (f) => {
     return f;
   };
+
   onOfferCancel = () => {
     this.setState({currentMarker: null});
   };
@@ -52,11 +62,12 @@ class NeedMap extends React.Component{
 
     return (
     <>
+      {this.state.redirect && this.onSignin()}
       <LoadScript
         googleMapsApiKey={process.env.REACT_APP_API_KEY}
       >
         <GoogleMap
-          // onCenterChanged={(e)=>console.log(e)}
+          onCenterChanged={(e)=>console.log(e)}
           mapContainerStyle={mapStyles}
           zoom={10}
           center={currentMarker ? {lat: currentMarker.latitude, lng: currentMarker.longitude } : {lat:39.873881,lng:32.748357}}
@@ -71,7 +82,7 @@ class NeedMap extends React.Component{
           value={currentMarker}
           onOfferHelp={this.onOffer}
           onCancel={this.onOfferCancel}
-          onSignin={this.onSignin}
+          onSignin={this.redirect}
         />}
     </>
   );
