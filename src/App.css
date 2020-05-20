@@ -27,16 +27,15 @@ body{
 {
   padding: 75px ;
   background-color: #f4f5f9;
-  /*background-color: grey;*/
   flex:var(--condiv-flex);
 }
 
 .home
 {
-  /*display: flex;*/
+
   justify-content: center;
   flex-direction: column;
-  /*align-items: center;*/
+
 
 }
 
@@ -187,12 +186,12 @@ h1,h2,h3,h4,p{
   padding-left:2%;
 }
 
-/* Background-color of the odd rows */
+
 .container tr:nth-child(odd) {
   background-color: #f4f5f9;
 }
 
-/* Background-color of the even rows */
+
 .container tr:nth-child(even) {
   background-color: #f4f5f9;
 }
@@ -212,10 +211,10 @@ h1,h2,h3,h4,p{
 
 .container td:hover {
   background-color: grey;
-  /*color: black;*/
+
   font-weight: bold;
 
-  /*box-shadow: #7F7C21 -1px 1px, #7F7C21 -2px 2px, #7F7C21 -3px 3px, #7F7C21 -4px 4px, #7F7C21 -5px 5px, #7F7C21 -6px 6px;*/
+
   transform: translate3d(6px, -6px, 0);
 
   transition-delay: 0s;
