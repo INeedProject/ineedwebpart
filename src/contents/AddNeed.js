@@ -102,14 +102,6 @@ class AddNeed extends React.Component{
             </Select>
           </FormControl>
           <br/>
-          {/*<FormControl className="controlform">*/}
-          {/*  <InputLabel id="demo-simple-select-label">Location</InputLabel>*/}
-          {/*  <Select*/}
-          {/*      value={this.state.selectedcity}*/}
-          {/*      onChange={(e) => this.setState({selectedcity: e.target.value})}>*/}
-          {/*    {citiesofturkey.map((x)=><MenuItem key={x} value={x}>{x}</MenuItem>)}*/}
-          {/*  </Select>*/}
-          {/*</FormControl>*/}
           <OnlyMap setcoordinates={this.setCoordinates}/>
           <br/>
           <Button
