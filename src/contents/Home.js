@@ -24,7 +24,7 @@ class Home extends Component {
         }
       });
 
-      console.log(bannedEmails);
+
 
       this.needs.on('value', snapshot => {
         let temp = [];

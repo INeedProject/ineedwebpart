@@ -52,7 +52,6 @@ this.setState({login: true});
           window.location.reload();
         });
       } catch (error) {
-        console.error(error);
         cogoToast.error("Check your email or password");
       }
     });
