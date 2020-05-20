@@ -1,22 +1,29 @@
 import React, {Component} from 'react';
 import {TextField, Button} from "@material-ui/core";
 
-import './styles/home.scss';
+import './styles/chats.scss';
 
-export default class Messages extends Component {
+export default class Chats extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: null,
+      current: -1,
       textFieldValue: '',
       chats: [],
     };
     this.chatsRef = props.rdb.ref('Chats/');
+    this.reportsRef = props.rdb.ref('reports/');
     this.email = localStorage.getItem("email");
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+  }
+
   componentDidMount() {
+
     this.chatsRef.on('value', snapshot => {
+      console.log('onvalue');
       let chats = [];
       snapshot.forEach(function (childsnaps) {
 
@@ -29,11 +36,13 @@ export default class Messages extends Component {
           chats.push(chat);
         }
       }.bind(this));
-      this.setState({chats: this.generateChats(chats), loading: false,}, () => console.log(this.state.chats));
-    })
+      this.chats = this.generateChats(chats);
+      this.setState({chats: this.chats, loading: false,}, () => console.log(this.state.chats));
+    });
   }
 
   generateChats = (chats) => {
+    console.log('generateChats');
     const chatsCombined = {};
 
     chats.forEach((el) => {
@@ -50,15 +59,17 @@ export default class Messages extends Component {
   };
 
   sendMessage = (mSender, mReceiver, mMessage) => {
-    const chatID = mSender.replace(/\./g,'') + ':' + mReceiver.replace(/\./g,'');
+    const chatID = mSender.replace(/\./g, '') + ':' + mReceiver.replace(/\./g, '');
     const timestamp = Date.now();
 
-    this.chatsRef.child(chatID).child(timestamp).push({
+    this.chatsRef.child(chatID).child(timestamp).set({
       mMessage,
       mReceiver,
       mSender,
       timestamp,
-    })
+    });
+
+    this.setState({textFieldValue: ''});
   };
 
   handleTextFieldChange = e => {
@@ -67,35 +78,52 @@ export default class Messages extends Component {
     });
   };
 
+  reportMessage = (message) => () => {
+    this.reportsRef.push({
+      message: message.mMessage,
+      reported: message.mSender,
+      reporter: this.email,
+      status: false,
+    });
+  };
+
   renderMessage = (message) => (
-    <div className="message">{message.mMessage}</div>
+    <div className={`message ${this.email === message.mSender ? 'sender' :''}`}>
+      <span className={'text'}>{message.mMessage}</span>
+      <span className={'date'}>{new Date(message.timestamp).toDateString()}</span>
+      {this.email !== message.mSender &&
+      <span className={'report'} onClick={this.reportMessage(message)}>Report</span>
+      }
+    </div>
   );
 
   renderMessages = (chat) => {
 
     let messages = [];
-    let reciever = '';
+    let receiver = '';
     // delete chat.key;
     for (let [key, value] of new Map([...Object.entries(chat).sort()])) {
-      if(typeof value === "object") {
+      if (typeof value === "object") {
         messages.push(value);
-        reciever = this.email !== value.mSender ? value.mSender : value.mReceiver;
+        receiver = this.email !== value.mSender ? value.mSender : value.mReceiver;
       }
     }
 
     return (
       <>
         <div className="title">
-          {chat.key}
+          <span>{chat.key}</span>
         </div>
         <div className="messages">
-          { messages.map(this.renderMessage) }
+          {messages.map(this.renderMessage)}
         </div>
         <TextField
+          placeholder={'Type here...'}
           onChange={this.handleTextFieldChange}
+          value={this.state.textFieldValue}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
-              this.sendMessage(this.email, reciever, 'test' );
+              this.sendMessage(this.email, receiver, this.state.textFieldValue);
             }
           }}
         />
@@ -105,24 +133,29 @@ export default class Messages extends Component {
 
   renderChats = (chats) => {
     return (
-      <div className="chats">
+      <>
         <div className="contacts">
+          <h2 className={'title'}>People</h2>
           <ul>
-            {chats.map(chat => <li key={chat.key} onClick={() => this.setState({current: chat})}>{chat.key}</li>)}
+            {chats.map((chat, index) =>
+              <li key={chat.key} onClick={() => this.setState({current: index})}>{chat.key}</li>
+            )}
           </ul>
         </div>
         <div className="chat">
-          {!!this.state.current && this.renderMessages(this.state.current)}
+          {this.state.current >= 0 && this.renderMessages(this.state.chats[this.state.current])}
         </div>
-      </div>
+      </>
     )
   };
 
   render() {
     const {chats} = this.state;
 
+    console.log('render');
+
     return (
-      <div className="condiv home">
+      <div className="condiv chats">
         {this.renderChats(chats)}
       </div>
     )

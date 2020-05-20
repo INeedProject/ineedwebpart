@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import NeedMap from "../Components/NeedMap";
+import './styles/home.scss';
 
 class Home extends Component {
-  constructor( props ){
-    super( props );
-    this.state={
+  constructor(props) {
+    super(props);
+    this.state = {
       needs: [],
     }
 
@@ -16,23 +17,25 @@ class Home extends Component {
       let temp = [];
       snapshot.forEach(function (childsnaps) {
         let item = childsnaps.val();
-        // TODO: user self check
         item.key = childsnaps.key;
-        temp.push(item);
+        console.log(item);
+        if (localStorage.getItem("email") !== item.email && !item.status) {
+          temp.push(item);
+        }
       });
       this.setState({needs: temp});
     });
   }
 
   render() {
-    const { needs } = this.state;
-    const { isLogin, rdb } = this.props;
+    const {needs} = this.state;
+    const {isLogin, rdb} = this.props;
 
     return (
-        <div className="condiv home">
+      <div className="condiv home">
         <NeedMap rdb={rdb} needs={needs} isLogin={isLogin}/>
-        </div>
-        )
+      </div>
+    )
   }
 }
 

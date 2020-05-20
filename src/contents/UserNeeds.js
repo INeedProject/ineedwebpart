@@ -9,14 +9,14 @@ class UserNeeds extends Component {
             userneeds:[],
             searched:false,
         }
-        this.fetch = this.props.rdb.ref('needs/');
+        this.needs = this.props.rdb.ref('needs/');
     }
     async componentDidMount(){
         this.getUserNeeds();
     }
 
     getUserNeeds = () => {
-        this.fetch.on('value', snapshot => {
+        this.needs.on('value', snapshot => {
             let temp = [];
             snapshot.forEach(function (childsnaps) {
                 let item = childsnaps.val();
@@ -28,6 +28,19 @@ class UserNeeds extends Component {
         });
     };
 
+    onApprove = (value) => () => {
+
+        console.log(value);
+        console.log(`/${value.key}`);
+
+        // this.needs.child(key).set({});
+        const newValue = {...value, status: true};
+        delete newValue.key;
+        this.needs.update({
+            [`/${value.key}`]: newValue,
+        })
+    };
+
     render() {
         return (
             <div className="condiv">
@@ -37,10 +50,28 @@ class UserNeeds extends Component {
                         <th><h1>Description</h1></th>
                         <th><h1>Location</h1></th>
                         <th><h1>Type</h1></th>
+                        <th></th>
                     </tr>
                     </thead>
-                {this.state.userneeds.map(((value, index) => <tbody><tr key={index}>
-                <td>{value.desc}</td><td>{value.location}</td><td>{value.type}</td></tr></tbody>))}
+                    <tbody>
+                    {this.state.userneeds.map(((value, index) =>
+                    <tr key={index}>
+                        <td>{value.desc}</td>
+                        <td>{value.location}</td>
+                        <td>{value.type}</td>
+                        <td>
+
+                            <Button
+                              disabled={value.status}
+                              variant="contained"
+                              onClick={this.onApprove(value)}
+                            >
+                                {value.status ? 'Received' : 'Approve'}
+                            </Button>
+                        </td>
+                    </tr>
+                    ))}
+                    </tbody>
                 </table>
             </div>
             )
