@@ -7,10 +7,12 @@ class Home extends Component {
     this.state={
       needs: [],
     }
+
+    this.needs = props.rdb.ref('needs/');
   }
 
   componentDidMount() {
-    this.props.fetch.on('value', snapshot => {
+    this.needs.on('value', snapshot => {
       let temp = [];
       snapshot.forEach(function (childsnaps) {
         let item = childsnaps.val();
@@ -24,11 +26,11 @@ class Home extends Component {
 
   render() {
     const { needs } = this.state;
-    const { isLogin } = this.props;
+    const { isLogin, rdb } = this.props;
 
     return (
         <div className="condiv home">
-        <NeedMap fetch={needs} isLogin={isLogin}/>
+        <NeedMap rdb={rdb} needs={needs} isLogin={isLogin}/>
         </div>
         )
   }

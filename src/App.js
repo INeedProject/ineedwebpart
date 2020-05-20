@@ -7,6 +7,7 @@ import "firebase/auth";
 import config from './Components/firebaseconfig';
 import Navbar from './Components/Navbar';
 import Home from './contents/Home';
+import Messages from './contents/Messages';
 import SignIn from './contents/SignIn';
 import UserNeeds from './contents/UserNeeds';
 import Search from './contents/Search';
@@ -15,9 +16,7 @@ import SignUp from './contents/SignUp';
 import AddNeed from './contents/AddNeed';
 import Signout from './contents/Signout'
 firebase.initializeApp(config);
-const rdb=firebase.database();
-const fetch= rdb.ref('needs/');
-const offers= rdb.ref('offers/');
+const rdb = firebase.database();
 
 class App extends React.Component{
   constructor(props){
@@ -46,7 +45,7 @@ class App extends React.Component{
         <UserNeeds rdb={rdb}/>
       </Route>
       <Route  path="/offers">
-        <Offers offers={offers}/>
+        <Offers rdb={rdb}/>
       </Route>
       <Route path="/signout">
         <Signout/>
@@ -61,10 +60,13 @@ class App extends React.Component{
     <Navbar />
     <Switch>
     <Route exact path="/">
-    <Home fetch={fetch} isLogin={isLogin}/>
+    <Home rdb={rdb} fetch={fetch} isLogin={isLogin}/>
     </Route>
     <Route exact path="/search">
-    <Search fetch={fetch} rdb={rdb} email={this.state.email}/>
+    <Search rdb={rdb} email={this.state.email}/>
+    </Route>
+    <Route exact path="/messages">
+    <Messages rdb={rdb} />
     </Route>
       {isLogin?signed:notsigned}
     </Switch>

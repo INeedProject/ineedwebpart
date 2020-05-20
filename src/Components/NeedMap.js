@@ -2,6 +2,7 @@ import React from "react";
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import NeedPanel from '../Components/NeedPanel';
 import { Redirect } from 'react-router-dom';
+import cogoToast from "cogo-toast";
 
 const mapStyles = {
   width: '100%',
@@ -25,7 +26,16 @@ class NeedMap extends React.Component{
     <Redirect to={'/signin'} />
   );
 
-  onOffer = (f) => {
+  offerHelp = (f) => {
+    const { currentMarker } = this.state;
+    console.log(this.state.currentMarker);
+    this.props.rdb.ref( 'offers/' ).push( {
+      needhash: currentMarker.key,
+      offerer: localStorage.getItem("email"),
+      email: currentMarker.email,
+      state: false,
+    });
+    cogoToast.success( "Your offer to help has been sent!" );
     return f;
   };
 
@@ -38,7 +48,7 @@ class NeedMap extends React.Component{
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.props.fetch);
+    console.log(this.props.needs);
   }
 
   renderMarkers = (data) => {
@@ -58,7 +68,7 @@ class NeedMap extends React.Component{
     const {currentMarker} = this.state;
     const {isLogin} = this.props;
 
-    const markers = this.renderMarkers(this.props.fetch);
+    const markers = this.renderMarkers(this.props.needs);
 
     return (
     <>
@@ -67,7 +77,7 @@ class NeedMap extends React.Component{
         googleMapsApiKey={process.env.REACT_APP_API_KEY}
       >
         <GoogleMap
-          onCenterChanged={(e)=>console.log(e)}
+          // onCenterChanged={(e)=>console.log(e)}
           mapContainerStyle={mapStyles}
           zoom={10}
           center={currentMarker ? {lat: currentMarker.latitude, lng: currentMarker.longitude } : {lat:39.873881,lng:32.748357}}
@@ -80,7 +90,7 @@ class NeedMap extends React.Component{
         <NeedPanel
           isLogin={isLogin}
           value={currentMarker}
-          onOfferHelp={this.onOffer}
+          offerHelp={this.offerHelp}
           onCancel={this.onOfferCancel}
           onSignin={this.redirect}
         />}

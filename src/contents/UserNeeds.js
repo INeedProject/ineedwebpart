@@ -9,10 +9,9 @@ class UserNeeds extends Component {
             userneeds:[],
             searched:false,
         }
-        this.fetch=null;
+        this.fetch = this.props.rdb.ref('needs/');
     }
     async componentDidMount(){
-        this.fetch=await this.props.rdb.ref('needs/');
         this.getUserNeeds();
     }
 

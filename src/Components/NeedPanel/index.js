@@ -9,7 +9,7 @@ export default class NeedPanel extends React.Component {
   }
 
   render() {
-    const {isLogin, value: {desc, location, type}} = this.props;
+    const { isLogin, value: {desc, location, type}} = this.props;
 
     return (
       <div
@@ -28,7 +28,7 @@ export default class NeedPanel extends React.Component {
           <div className="buttons">
             {isLogin ?
               <>
-                <Button variant="contained" onClick={this.props.onOffer}>Offer Help</Button>
+                <Button variant="contained" onClick={this.props.offerHelp}>Offer Help</Button>
 
               </>
               :

@@ -1,59 +1,86 @@
 import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
-import cogoToast from "cogo-toast";
-class Offers extends Component {
-    constructor(props){
+
+export default class Offers extends Component {
+    constructor(props) {
         super(props);
-        this.state={
-            offerdata:[],
-            searched:false,
+        this.state = {
+            offerdata: [],
+            loading: true,
         }
+        this.offers = props.rdb.ref('offers/');
+        this.chats = props.rdb.ref('Chats/');
     }
-    async componentDidMount(){
-        this.getOffers();
-    }
-    getOffers =  () => {
-        let temp=[];
-        this.props.offers.on('value', snapshot => {
-            snapshot.forEach(function(childsnaps){
-                let item=childsnaps.val();
-                item.key=childsnaps.key;
-                if(item.email===localStorage.getItem("email"))
-                    temp.push(item);
 
+    componentDidMount() {
+        this.offers.on('value', snapshot => {
+            let offers = [];
+            snapshot.forEach(function (childsnaps) {
+                let item = childsnaps.val();
+                item.key = childsnaps.key;
+                if (item.email === localStorage.getItem("email"))
+                    offers.push(item);
             });
-
+            this.setState({ offerdata: offers, loading: false, });
+            console.log(offers);
         });
-        this.setState({offerdata:temp});
     };
-    showResults=(event)=>{
-        event.preventDefault();
-        this.setState({searched:true});
-        cogoToast.success("Results have found");
-    }
+
+    onAcceptOffer = value => () => {
+        const { offers,chats } = this;
+
+        offers.update({
+            ['/' + value.key + '/state'] : true,
+        });
+        // const chatID = value.offerer.replace(/\./g,'') + ':' + value.email.replace(/\./g,'');
+        // const timestamp = Date.now();
+
+        // chats.update({
+        //     [chatID] : { [timestamp] : {
+        //             mMessage: 'Thanks!',
+        //             mReceiver: value.email,
+        //             mSender: value.offerer,
+        //             timestamp,
+        //     }}
+        // });
+    };
+
     render() {
         return (
-            <div className="condiv">
-                <Button
-                    variant="contained"
-                    onClick={this.showResults}
-                >
-                    See the offers.
-                </Button>
-                <table className="container">
-                    <thead>
+          <div className="condiv">
+              <table className="container">
+                  <thead>
+                  <tr>
+                      <th><h1>Help Offerer </h1></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {!this.state.loading ?
+                    this.state.offerdata.length > 0 ?
+                    this.state.offerdata.map(((value, index) =>
+                        <tr key={index}>
+                            <td>
+                                <span>{value.offerer}</span>
+                                { !value.state && <Button variant="contained" onClick={this.onAcceptOffer(value)} style={{marginRight: 25, float: 'right'}}>Accept Help</Button> }
+                            </td>
+                        </tr>
+                    ))
+                      :
+                      <tr>
+                          <td colSpan={4}>
+                              <span>No data</span>
+                          </td>
+                      </tr>
+                    :
                     <tr>
-                        <th><h1>My Email</h1></th>
-                        <th><h1>Offerer</h1></th>
-                        <th><h1>Hashcode of the need</h1></th>
+                        <td colSpan={4}>
+                            <span>Loading data...</span>
+                        </td>
                     </tr>
-                    </thead>
-                {this.state.searched?this.state.offerdata.map(((value, index) => <tbody><tr key={index}><td>{value.email}</td>
-                    <td>{value.offerer}</td><td>{value.needhash}</td></tr></tbody>)):<></>}
-                </table>
-            </div>
-            )
-        }
+                  }
+                  </tbody>
+              </table>
+          </div>
+        )
     }
-
-    export default Offers
+}

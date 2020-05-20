@@ -21,6 +21,7 @@ class Search extends Component {
             getsearch:[],
         };
 
+        this.needs = props.rdb.ref('needs/');
     }
 
     componentDidUpdate( prevProps, prevState, snapshot ){
@@ -67,7 +68,7 @@ class Search extends Component {
         console.log()
         let temp=[];
         let checkingInputs=this.checkInputs;
-        this.props.fetch.on('value', snapshot => {
+        this.needs.on('value', snapshot => {
             snapshot.forEach(function(childsnaps){
                 let item=childsnaps.val();
                 item.key=childsnaps.key;
