@@ -29,8 +29,7 @@ class NeedMap extends React.Component {
 
   offerHelp = (f) => {
     const {currentMarker} = this.state;
-    console.log(this.state.currentMarker);
-    this.props.rdb.ref('offers/').push({
+this.props.rdb.ref('offers/').push({
       needhash: currentMarker.key,
       offerer: localStorage.getItem("email"),
       email: currentMarker.email,
@@ -49,8 +48,7 @@ class NeedMap extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.props.needs);
-  }
+}
 
   renderMarkers = (data) => {
     return data.map((val, index) =>
@@ -78,8 +76,7 @@ class NeedMap extends React.Component {
           googleMapsApiKey={process.env.REACT_APP_API_KEY}
         >
           <GoogleMap
-            // onCenterChanged={(e)=>console.log(e)}
-            mapContainerStyle={mapStyles}
+mapContainerStyle={mapStyles}
             zoom={10}
             center={currentMarker ? {lat: currentMarker.latitude, lng: currentMarker.longitude} : {
               lat: 39.873881,

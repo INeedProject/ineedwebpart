@@ -15,8 +15,7 @@ class OnlyMap extends React.Component{
   }
   placeMarker=event=>{
     this.setState({poslng:event.latLng.lng(),poslat:event.latLng.lat()});
-    console.log(event.latLng.lng()+" "+event.latLng.lat());
-    this.props.setcoordinates(event.latLng.lng(),event.latLng.lat());
+this.props.setcoordinates(event.latLng.lng(),event.latLng.lat());
 
   };
 

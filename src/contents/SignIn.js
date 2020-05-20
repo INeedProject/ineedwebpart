@@ -43,9 +43,8 @@ class SignIn extends Component {
       }
 
       try {
-        console.log(this.props.firebase.auth().signInWithEmailAndPassword(email, pass));
-        console.log("you are logged in");
-        this.setState({login: true});
+        this.props.firebase.auth().signInWithEmailAndPassword(email, pass);
+this.setState({login: true});
         localStorage.setItem("loggedin", "yes");
         localStorage.setItem("email", email);
         cogoToast.success("Successfully logged in", {hideAfter: 0.5,}).then(() => {

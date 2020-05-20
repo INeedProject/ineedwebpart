@@ -65,8 +65,7 @@ class Search extends Component {
     }
 
     searchNeedrealtime =  () => {
-        console.log()
-        let temp=[];
+let temp=[];
         let checkingInputs=this.checkInputs;
         this.needs.on('value', snapshot => {
             snapshot.forEach(function(childsnaps){
@@ -83,8 +82,7 @@ class Search extends Component {
 
     showResults=(event)=>{
         event.preventDefault();
-        console.log(this.state.getsearch.length)
-        if(this.state.selectedcity===""&& this.state.selectedtype===""&&this.state.keywords==="")
+if(this.state.selectedcity===""&& this.state.selectedtype===""&&this.state.keywords==="")
             cogoToast.error("All fields are blank");
         else if(this.state.getsearch.length<=0)
             cogoToast.error("Criteria did not match with any results");
@@ -106,8 +104,7 @@ class Search extends Component {
                 email: event.target.parentNode.getAttribute( "email" ),
                 state: false,
             } );
-            console.log( "offering help?" );
-            this.setState( { searched: true } );
+this.setState( { searched: true } );
             cogoToast.success( "Your offer to help has been sent!" );
         }
     };

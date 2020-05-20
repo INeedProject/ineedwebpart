@@ -30,10 +30,7 @@ class UserNeeds extends Component {
 
     onApprove = (value) => () => {
 
-        console.log(value);
-        console.log(`/${value.key}`);
-
-        // this.needs.child(key).set({});
+// this.needs.child(key).set({});
         const newValue = {...value, status: true};
         delete newValue.key;
         this.needs.update({

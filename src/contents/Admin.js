@@ -26,7 +26,7 @@ export default class Admin extends Component {
   };
 
   onAccept = (value) => () => {
-    const {reportsRef} = this;
+    const { reportsRef } = this;
 
     reportsRef.update({
       ['/' + value.key + '/status']: !value.status,
@@ -34,7 +34,7 @@ export default class Admin extends Component {
   };
 
   onDecline = value => () => {
-    const {reportsRef} = this;
+    const { reportsRef } = this;
 
     reportsRef.update({
       ['/' + value.key]: {},

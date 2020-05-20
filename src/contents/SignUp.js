@@ -15,7 +15,7 @@ class SignIn extends Component {
         event.preventDefault();
         const {email,pass}=this.state;
         try{
-            console.log(await this.props.firebase.auth().createUserWithEmailAndPassword( email,pass ));
+            await this.props.firebase.auth().createUserWithEmailAndPassword( email,pass );
             cogoToast.success("Successfully signed up");
         }catch ( error ){
             cogoToast.error("Some issues have happened");

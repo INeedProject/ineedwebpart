@@ -31,7 +31,7 @@ class App extends React.Component {
 
     this.admins = [
       'admin@admin.com',
-      'ineed_batu2@mailinator.com'
+      'faqeacc@yandex.com'
     ]
   }
 
@@ -40,10 +40,7 @@ class App extends React.Component {
   render() {
     const isLogin = localStorage.getItem("loggedin") === "yes";
     const isAdmin = this.isAdmin(this.state.email);
-    console.log(this.state.email);
-  console.log(this.isAdmin);
-
-    const notsigned = <><Route path="/signin">
+const notsigned = <><Route path="/signin">
       <SignIn firebase={firebase}/>
     </Route>
       <Route path="/signup">

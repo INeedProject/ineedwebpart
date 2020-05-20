@@ -24,8 +24,7 @@ export default class Offers extends Component {
           offers.push(item);
       });
       this.setState({offerdata: offers, loading: false,});
-      console.log(offers);
-    });
+});
   };
 
   onAccept = value => () => {

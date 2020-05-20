@@ -23,8 +23,7 @@ export default class Chats extends Component {
   componentDidMount() {
 
     this.chatsRef.on('value', snapshot => {
-      console.log('onvalue');
-      let chats = [];
+let chats = [];
       snapshot.forEach(function (childsnaps) {
 
         const chat = {
@@ -37,13 +36,12 @@ export default class Chats extends Component {
         }
       }.bind(this));
       this.chats = this.generateChats(chats);
-      this.setState({chats: this.chats, loading: false,}, () => console.log(this.state.chats));
+      this.setState({chats: this.chats, loading: false,});
     });
   }
 
   generateChats = (chats) => {
-    console.log('generateChats');
-    const chatsCombined = {};
+const chatsCombined = {};
 
     chats.forEach((el) => {
       const msgWith = el.key.replace(this.email.replace(/\./g, ''), '').replace(/\:/g, '');
@@ -152,9 +150,7 @@ export default class Chats extends Component {
   render() {
     const {chats} = this.state;
 
-    console.log('render');
-
-    return (
+return (
       <div className="condiv chats">
         {this.renderChats(chats)}
       </div>
